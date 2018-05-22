@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title th:text="#{seances}">Seances</title>
+    <link rel="stylesheet"
+          href="../../resources/static/css/font-awesome.min.css"
+          th:href="@{/resources/static/css/font-awesome.min.css}">
+    <link rel="stylesheet"
+          href="../../resources/static/css/bootstrap.css"
+          th:href="@{/resources/static/css/bootstrap.css}">
+    <link rel="stylesheet"
+          href="../../resources/static/css/style.css"
+          th:href="@{/resources/static/css/style.css}">
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+</head>
+
+<body>
+    <nav class="p-0 pl-2 pr-2 navbar navbar-expand-sm navbar-dark bg-dark text-light">
+        <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarsNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a href="/" class="navbar-brand">
+            <img src="../../resources/static/img/icon_cnm.svg"
+                 th:src="@{/resources/static/img/icon_cnm.svg}"
+                 width="40" height="40">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarsNav">
+            <nav class="navbar-nav">
+                <a class="nav-item nav-link"
+                   href="movies.html"
+                   th:href="@{/movies}"
+                   th:text="#{movies}">Movies</a>
+                <a class="nav-item nav-link active"
+                   href="seances.html"
+                   th:href="@{/seances}"
+                   th:text="#{seances}">Seances</a>
+            </nav>
+        </div>
+        <div>
+            <h6>
+                <a href="seances?lang=en" class="badge badge-light">en</a>
+                <a href="seances?lang=ru" class="badge badge-light">ru</a>
+            </h6>
+        </div>
+    </nav>
+
+<header>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light text-dark">
+        <span class="navbar-brand text-uppercase mr-auto"
+              th:text="#{seances}">
+            Seances
+        </span>
+        <span class="input-group col">
+            <div class="input-group-prepend">
+                <span class="input-group-text"
+                      id="basic-addon"
+                      th:text="#{filter}">
+                    Filter
+                </span>
+            </div>
+            <input type="text"
+                   class="form-control"
+                   id="datefilter"
+                   name="datefilter">
+        </span>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a title="Create seance"
+                   th:title="#{create_seance}"
+                   href="seance.html"
+                   th:href="@{/seance}"
+                   class="btn btn-light"
+                   data-toggle="tooltip"
+                   data-placement="bottom">
+                   <i class="fa fa-plus-circle"
+                      style="font-size:24px"></i>
+                   <span class="d-none d-md-inline"
+                         th:text="#{create}">Create</span>
+                </a>
+            </li>
+        </ul>
+
+    </nav>
+</header>
+<section id="seances">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="card" th:if="not ${seances.isEmpty()}">
+                    <div class="card-body">
+                        <table class="mb-2 table table-striped">
+                            <thead class="thead-inverse">
+                            <tr>
+                                <th th:text="#{date}">Date</th>
+                                <th th:text="#{time}">Time</th>
+                                <th th:text="#{film}">Film</th>
+                                <th th:text="#{cost}">Cost</th>
+                                <th th:text="#{sold}">Sold tickets</th>
+                                <th th:text="#{seance_activity}">Activity</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="seance : ${seances}">
+                                <td th:text="${#dates.format(seance.seanceDate, 'dd MMMM yyyy')}">01.05.2018</td>
+                                <td th:text="${#dates.format(seance.seanceDate, 'HH:mm')}">12:00</td>
+                                <td th:each="movie : ${movies}"
+                                    th:if="${seance.movieId == movie.movieId}"
+                                        th:text="${movie.movieName}">Terminator</td>
+                                <td th:text="${'$ ' + seance.seanceCost}">$ 5</td>
+                                <td th:text="${seance.seanceSold + ' tickets'}">55 tickets</td>
+                                <td th:text="${seance.seanceActive} ? '' : #{canceled}">Active/Canceled</td>
+                                <td class="text-right">
+                                    <a href="seance.html"
+                                       th:href="@{|/seance/${seance.seanceId}|}"
+                                       class="btn btn-outline-dark btn-sm"
+                                       data-toggle="tooltip"
+                                       data-placement="top"
+                                       title="Edit seance"
+                                       th:title="#{edit_seance}">
+                                        <i class="fa fa-edit" style="font-size:24px"></i>
+                                    </a>
+                                    <span data-toggle="modal"
+                                          data-target="#confirmRemoveModal"
+                                          th:data-target="${seance.seanceDate <= #dates.createNow().getTime()} ? '#warningRemove' : '#confirmRemoveModal'"
+                                          th:attr="data-id=${seance.seanceId}, data-date=${#dates.format(seance.seanceDate, 'dd MMMM yyyy HH:mm')}">
+                                        <button role="button"
+                                                th:disabled="${not seance.seanceActive}"
+                                                class="btn btn-outline-dark btn-sm"
+                                                data-toggle="tooltip"
+                                                data-placement="top"
+                                                th:title="#{remove_seance}">
+                                            <i class="fa fa-trash-o" style="font-size:24px"></i>
+                                        </button>
+                                    </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card alert alert-warning"
+                         th:if="${seances.isEmpty()}">
+                        <h2 th:text="#{nothing_found}">Nothing found</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- RemoveSeanceModal -->
+    <div class="modal fade"
+         id="confirmRemoveModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered"
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-danger">
+                    <h5 class="modal-title "
+                        id="exampleModalLongTitle"
+                        th:text="#{delete_seance_header}">
+                        Deleting seance.
+                    </h5>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure to remove this seance?
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                            th:text="#{close_button}">
+                        Close
+                    </button>
+                    <a id="deleteUrl"
+                       href="#"
+                       class="btn btn-danger"
+                       th:text="#{remove_button}">
+                        Remove
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- WarningSeanceModal -->
+    <div class="modal fade"
+         id="warningRemove"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered "
+             role="document">
+            <div class="modal-content">
+                <div class="modal-header alert alert-danger">
+                    <h5 class="modal-title"
+                        id="warningRemoveTitle"
+                        th:text="#{warning_title}">
+                        WARNING
+                    </h5>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"
+                     th:text="#{warning_text}">
+                    You can not delete this seance.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../resources/static/js/jquery.min.js"
+            th:src="@{/resources/static/js/jquery.min.js}"></script>
+    <script src="../../resources/static/js/popper.min.js"
+            th:src="@{/resources/static/js/popper.min.js}"></script>
+    <script src="../../resources/static/js/bootstrap.min.js"
+            th:src="@{/resources/static/js/bootstrap.min.js}"></script>
+
+    <!--<script type="text/javascript" src="http://cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>-->
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+
+    <script>
+        $(function() {
+
+            $('input[name="datefilter"]').daterangepicker({
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerIncrement: 10,
+                locale: {
+                    format: 'YYYY-MM-DD-HH:mm:ss'
+                }
+            });
+
+            $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+                window.location.href = '/seances/' + picker.startDate.format('YYYY-MM-DD-HH:mm:ss') + '/' + picker.endDate.format('YYYY-MM-DD-HH:mm:ss');
+                $(this).val(picker.startDate.format('YYYY-MM-DD-HH:mm:ss') + ' to ' + picker.endDate.format('YYYY-MM-DD-HH:mm:ss'));
+            });
+
+            $('input[name="datefilter"]').on('cancel.daterangepicker', function() {
+                $(this).val('');
+            });
+        });
+</script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    $('#confirmRemoveModal').on('show.bs.modal', function (event) {
+       var target = $(event.relatedTarget)
+       $(this).find('.modal-body').text('Please confirm delete seance: "' + target.data('date') + '"')
+       document.getElementById('deleteUrl').href = '/seance/' + target.data('id') + '/delete';
+    })
+</script>
+</body>
+</html>

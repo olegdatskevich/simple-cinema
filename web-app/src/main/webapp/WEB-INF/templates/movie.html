@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title th:text="${isNew} ? #{new_movie} : #{edit_movie}">
+        Edit movie/New movie
+    </title>
+    <link rel="stylesheet"
+          href="../../resources/static/css/font-awesome.min.css"
+          th:href="@{/resources/static/css/font-awesome.min.css}">
+    <link rel="stylesheet"
+          href="../../resources/static/css/bootstrap.css"
+          th:href="@{/resources/static/css/bootstrap.css}">
+    <link rel="stylesheet"
+          href="../../resources/static/css/style.css"
+          th:href="@{/resources/static/css/style.css}">
+</head>
+<body>
+    <nav class="p-0 pl-2 pr-2 navbar navbar-expand-sm navbar-dark bg-dark text-light">
+        <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarsNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a href="/" class="navbar-brand">
+            <img src="../../resources/static/img/icon_cnm.svg"
+                 th:src="@{/resources/static/img/icon_cnm.svg}"
+                 width="40" height="40">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarsNav">
+                <nav class="navbar-nav">
+                    <a class="nav-item nav-link active"
+                       href="movies.html"
+                       th:href="@{/movies}"
+                       th:text="#{movies}">Movies</a>
+                    <a class="nav-item nav-link"
+                       href="seances.html"
+                       th:href="@{/seances}"
+                       th:text="#{seances}">Seances</a>
+                </nav>
+        </div>
+        <div>
+            <h6>
+                <a href="movie?lang=en" class="badge badge-light">en</a>
+                <a href="movie?lang=ru" class="badge badge-light">ru</a>
+            </h6>
+        </div>
+    </nav>
+<header>
+    <nav id="main-header" class="mb-2 navbar navbar-expand-sm navbar-light bg-light text-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item"
+                th:title="#{back_movies}"
+                data-toggle="tooltip"
+                data-placement="bottom">
+                <a href="movies.html"
+                   th:href="@{/movies}"
+                   class="btn btn-light btn-block">
+                    <i class="fa fa-arrow-left"></i>
+                    <span class="d-none dm-sm-inline"></span>
+                </a>
+            </li>
+        </ul>
+        <span class="navbar-brand text-uppercase mr-auto"
+              th:text="${isNew} ? #{new_movie} : #{editing_movie}">
+            Edit movie / New movie
+        </span>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="movies.html"
+                   th:href="@{/movie}"
+                   th:onclick="@{document.forms['movieForm'].submit(); return false;}"
+                   class="btn btn-light"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   th:title="${isNew} ? #{save_movie} : #{save_changes}">
+                    <i class="fa fa-save"></i>
+                    <span class="d-none d-md-inline"
+                          th:text="#{save}">
+                        Save
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<section id="movies">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+
+                        <form id="movieForm"
+                              th:object="${movie}"
+                              action="movies.html"
+                              th:action="@{${#httpServletRequest.servletPath}}"
+                              th:method="@{post}">
+
+                            <input id="field_movieId"
+                                   name="field_movieId"
+                                   type="hidden"
+                                   th:field="*{movieId}"/>
+
+                            <div class="form-group">
+                                <label class="form-control-label"
+                                       for="movieNameInput"
+                                       th:text="#{movie_name}">
+                                    Movie name
+                                </label>
+                                <input th:field="*{movieName}"
+                                       th:class="${#fields.hasErrors('movieName')} ? 'form-control is-invalid' : 'form-control'"
+                                       th:placeholder="#{input_mov_name}"
+                                       id="movieNameInput"
+                                       type="text"
+                                       class="form-control">
+                                <div th:if="${#fields.hasErrors('movieName')}"
+                                     class="invalid-feedback"
+                                     th:errors="*{movieName}">
+                                    [ERRORS]
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-control-label"
+                                       for="movieDescriptionInput"
+                                       th:text="#{movie_description}">
+                                    Movie description
+                                </label>
+                                <textarea type="text" rows="3"
+                                       th:class="${#fields.hasErrors('movieDescription')} ? 'form-control is-invalid' : 'form-control'"
+                                       th:field="*{movieDescription}"
+                                       class="form-control"
+                                       id="movieDescriptionInput"
+                                       th:placeholder="#{input_mov_descr}">
+                                </textarea>
+                                <div th:if="${#fields.hasErrors('movieDescription')}"
+                                     class="invalid-feedback"
+                                     th:errors="*{movieDescription}">[ERRORS]
+                                </div>
+                            </div>
+
+                            <div th:if="${not isNew}">
+                                <h4>
+                                    <span th:class="${movie.movieActive} ? 'badge badge-success' : 'badge badge-danger'"
+                                          class="text-uppercase mr-auto"
+                                          th:text="${movie.movieActive} ? #{active} : #{removed}">
+                                        ACTIVE/REMOVED
+                                    </span>
+                                </h4>
+                            </div>
+
+                            <div>
+                                <input id="field_movieActive"
+                                       name="field_movieActive"
+                                       type="hidden"
+                                       th:field="*{movieActive}"/>
+                            </div>
+
+                            <!--<div class="form-group form-check"
+                                 th:if="${not isNew and not movie.movieActive}">
+                                <input th:field="*{movieActive}"
+                                       th:if="${movieActive} ? 'checked' : ''"
+                                       type="checkbox"
+                                       class="form-check-input"
+                                       id="movieActivity">
+                                <label class="form-check-label" for="movieActivity">
+                                    Activate movie
+                                </label>
+                            </div>-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <script src="../../resources/static/js/jquery.min.js"
+            th:src="@{/resources/static/js/jquery.min.js}"></script>
+    <script src="../../resources/static/js/popper.min.js"
+            th:src="@{/resources/static/js/popper.min.js}"></script>
+    <script src="../../resources/static/js/bootstrap.min.js"
+            th:src="@{/resources/static/js/bootstrap.min.js}"></script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+</body>
+</html>

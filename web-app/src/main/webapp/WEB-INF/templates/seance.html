@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title th:text="${isNew} ? #{new_seance} : #{edit_seance}">
+        Edit seance/New seance
+    </title>
+    <link rel="stylesheet"
+          href="../../resources/static/css/font-awesome.min.css"
+          th:href="@{/resources/static/css/font-awesome.min.css}">
+    <link rel="stylesheet"
+          href="../../resources/static/css/bootstrap.css"
+          th:href="@{/resources/static/css/bootstrap.css}">
+    <link rel="stylesheet"
+          href="../../resources/static/css/style.css"
+          th:href="@{/resources/static/css/style.css}">
+
+    <link rel="stylesheet"
+          media="screen"
+          href="../../resources/static/css/bootstrap.min.css"
+          th:href="@{/resources/static/css/bootstrap.min.css}">
+    <link rel="stylesheet"
+          media="screen"
+          href="../../resources/static/css/bootstrap-datetimepicker.min.css"
+          th:href="@{/resources/static/css/bootstrap-datetimepicker.min.css}">
+
+</head>
+
+<body>
+    <nav class="p-0 pl-2 pr-2 navbar navbar-expand-sm navbar-dark bg-dark text-light">
+        <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarsNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a href="/" class="navbar-brand">
+            <img src="../../resources/static/img/icon_cnm.svg"
+                 th:src="@{/resources/static/img/icon_cnm.svg}"
+                 width="40" height="40">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarsNav">
+            <nav class="navbar-nav">
+                <a class="nav-item nav-link"
+                   href="movies.html"
+                   th:href="@{/movies}"
+                   th:text="#{movies}">Movies</a>
+                <a class="nav-item nav-link active"
+                   href="seances.html"
+                   th:href="@{/seances}"
+                   th:text="#{seances}">Seances</a>
+            </nav>
+        </div>
+        <div>
+            <h6>
+                <a href="seance?lang=en" class="badge badge-light">en</a>
+                <a href="seance?lang=ru" class="badge badge-light">ru</a>
+            </h6>
+        </div>
+    </nav>
+
+<header>
+    <nav id="main-header"
+         class="mb-2 navbar navbar-expand-sm navbar-light bg-light text-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item"
+                title="Back to seances"
+                th:title="#{back_seances}"
+                data-toggle="tooltip"
+                data-placement="bottom">
+                <a href="seances.html"
+                   th:href="@{/seances}"
+                   class="btn btn-light btn-block">
+                    <i class="fa fa-arrow-left"></i>
+                    <span class="d-none dm-sm-inline"></span>
+                </a>
+            </li>
+        </ul>
+        <span class="navbar-brand text-uppercase mr-auto"
+              th:text="${isNew} ? #{new_seance} : #{edit_seance}">
+            New seance / Edit seance
+        </span>
+        <span th:if="${not isNew}"
+                class="navbar-brand text-uppercase mr-auto"
+              th:text="${#dates.format(seance.seanceDate, 'dd MMMM yyyy HH:mm')}">
+            DATE TIME
+        </span>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="seances.html"
+                   th:href="@{/seance}"
+                   th:onclick="@{document.forms['seanceForm'].submit(); return false;}"
+                   class="btn btn-light"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   th:title="${isNew} ? #{create_seance} : #{save_changes}">
+                    <i class="fa fa-save"></i>
+                    <span class="d-none d-md-inline"
+                          th:text="${isNew} ? #{create} : #{save}">
+                        Create / Save
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<section id="seances">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+
+                        <form id="seanceForm"
+                              th:object="${seance}"
+                              action="seances.html"
+                              th:action="@{${#httpServletRequest.servletPath}}"
+                              th:method="@{post}">
+
+                            <input th:field="*{seanceId}"
+                                   id="field_seanceId"
+                                   name="field_seanceId"
+                                   type="hidden"/>
+
+                            <input id="field_seanceActive"
+                                   name="field_seanceActive"
+                                   type="hidden"
+                                   th:field="*{seanceActive}"/>
+
+                            <div th:if="${isNew}"
+                                 class="input-append date form_datetime">
+                                <label th:text="#{date_time}">
+                                    Date&Time
+                                </label>
+                                <span class="add-on">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input th:field="*{seanceDate}"
+                                       class="form-control"
+                                       size="16"
+                                       type="text"
+                                       value=""
+                                       readonly>
+                            </div>
+
+                            <div th:if="${isNew}"
+                                 class="form-group">
+                                <label for="seanceCost"
+                                       th:text="#{cost}">
+                                    Cost
+                                </label>
+                                <input type="number"
+                                       th:field="*{seanceCost}"
+                                       th:placeholder="#{input_seance_cost}"
+                                       th:class="${#fields.hasErrors('seanceCost')} ? 'form-control is-invalid' : 'form-control'"
+                                       class="form-control"
+                                       id="seanceCost">
+                                <div th:if="${#fields.hasErrors('seanceCost')}"
+                                     class="invalid-feedback"
+                                     th:text="#{seance_cost_error}">
+                                    [ERROR]
+                                </div>
+                            </div>
+
+                            <div th:if="${not isNew}"
+                                 class="form-group">
+                                    <label for="seanceSold"
+                                           th:text="#{sold_tickets}">
+                                        Sold tickets
+                                    </label>
+                                    <input type="number"
+                                           th:field="*{seanceSold}"
+                                           th:placeholder="#{input_seance_sold}"
+                                           th:class="${#fields.hasErrors('seanceSold')} ? 'form-control is-invalid' : 'form-control'"
+                                           class="form-control"
+                                           id="seanceSold">
+                                    <div th:if="${#fields.hasErrors('seanceSold')}"
+                                         class="invalid-feedback"
+                                         th:text="#{seance_sold_error}">
+                                        [ERRORS]
+                                    </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="movieChose"
+                                       th:text="#{film}">Movie</label>
+                                <select id="movieChose"
+                                        th:field="*{movieId}"
+                                        th:class="${#fields.hasErrors('movieId')} ? 'custom-select is-invalid' : 'custom-select'"
+                                        class="custom-select">
+                                    <option th:each="movie : ${movies}"
+                                            th:value="${movie.movieId}"
+                                            th:text="${movie.movieName}">
+                                        Movie title
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div th:if="${not isNew}">
+                                <h4>
+                                    <span th:class="${seance.seanceActive} ? 'badge badge-success' : 'badge badge-danger'"
+                                          class="text-uppercase mr-auto"
+                                          th:text="${seance.seanceActive} ? #{active} : #{canceled}">
+                                        ACTIVE/REMOVED
+                                    </span>
+                                </h4>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <script src="../../resources/static/js/jquery.min.js"
+            th:src="@{/resources/static/js/jquery.min.js}"></script>
+    <script src="../../resources/static/js/popper.min.js"
+            th:src="@{/resources/static/js/popper.min.js}"></script>
+    <script src="../../resources/static/js/bootstrap.min.js"
+            th:src="@{/resources/static/js/bootstrap.min.js}"></script>
+    <script src="../../resources/static/js/bootstrap-datetimepicker.js"
+            th:src="@{/resources/static/js/bootstrap-datetimepicker.js}"
+            type="text/javascript"
+            charset="UTF-8"></script>
+    <script src="../../resources/static/js/locales/bootstrap-datetimepicker.ru.js"
+            th:src="@{/resources/static/js/locales/bootstrap-datetimepicker.ru.js}"
+            type="text/javascript"
+            charset="UTF-8"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        format: "D M dd hh:ii:ss z yyyy",
+        autoclose: true,
+        todayBtn: true,
+        minuteStep: 10,
+        timezone: 'MSK'
+    });
+</script>
+</body>
+</html>
