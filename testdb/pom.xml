@@ -6,7 +6,7 @@
 
     <parent>
         <artifactId>cinema</artifactId>
-        <groupId>com.epam.brest.course</groupId>
+        <groupId>com.entertainment</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 

@@ -10,21 +10,21 @@
 
     <parent>
         <artifactId>cinema</artifactId>
-        <groupId>com.epam.brest.course</groupId>
+        <groupId>com.entertainment</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <dependency>
-            <groupId>com.epam.brest.course</groupId>
+            <groupId>com.entertainment</groupId>
             <artifactId>model</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.epam.brest.course</groupId>
+            <groupId>com.entertainment</groupId>
             <artifactId>dao-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.epam.brest.course</groupId>
+            <groupId>com.entertainment</groupId>
             <artifactId>testdb</artifactId>
         </dependency>
 

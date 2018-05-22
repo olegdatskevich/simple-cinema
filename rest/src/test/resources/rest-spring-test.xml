@@ -8,15 +8,15 @@
        http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
     <bean id="movieService" class="org.easymock.EasyMock" factory-method="createMock">
-        <constructor-arg value="com.epam.brest.course.service.MovieService"/>
+        <constructor-arg value="com.entertainment.service.MovieService"/>
     </bean>
 
     <bean id="seanceService" class="org.easymock.EasyMock" factory-method="createMock">
-        <constructor-arg value="com.epam.brest.course.service.SeanceService"/>
+        <constructor-arg value="com.entertainment.service.SeanceService"/>
     </bean>
 
-    <bean id="errorController" class="com.epam.brest.course.rest.RestErrorHandler"/>
+    <bean id="errorController" class="com.entertainment.rest.RestErrorHandler"/>
 
-    <context:component-scan base-package="com.epam.brest.course.rest"/>
+    <context:component-scan base-package="com.entertainment.rest"/>
 
 </beans>

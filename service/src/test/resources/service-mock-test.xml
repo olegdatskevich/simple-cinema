@@ -5,15 +5,15 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="movieDao" class="org.easymock.EasyMock" factory-method="createMock">
-        <constructor-arg value="com.epam.brest.course.dao.MovieDao"/>
+        <constructor-arg value="com.entertainment.dao.MovieDao"/>
     </bean>
 
-    <bean id="movieService" class="com.epam.brest.course.service.MovieServiceImpl"/>
+    <bean id="movieService" class="com.entertainment.service.MovieServiceImpl"/>
 
     <bean id="seanceDao" class="org.easymock.EasyMock" factory-method="createMock">
-        <constructor-arg value="com.epam.brest.course.dao.SeanceDao"/>
+        <constructor-arg value="com.entertainment.dao.SeanceDao"/>
     </bean>
 
-    <bean id="seanceService" class="com.epam.brest.course.service.SeanceServiceImpl"/>
+    <bean id="seanceService" class="com.entertainment.service.SeanceServiceImpl"/>
 
 </beans>

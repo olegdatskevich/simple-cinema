@@ -5,7 +5,7 @@
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.epam.brest.course</groupId>
+    <groupId>com.entertainment</groupId>
     <artifactId>cinema</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -63,47 +63,47 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.epam.brest.course</groupId>
+                <groupId>com.entertainment</groupId>
                 <artifactId>model</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.epam.brest.course</groupId>
+                <groupId>com.entertainment</groupId>
                 <artifactId>dao-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.epam.brest.course</groupId>
+                <groupId>com.entertainment</groupId>
                 <artifactId>dao</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.epam.brest.course</groupId>
+                <groupId>com.entertainment</groupId>
                 <artifactId>service-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.epam.brest.course</groupId>
+                <groupId>com.entertainment</groupId>
                 <artifactId>service</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.epam.brest.course</groupId>
+                <groupId>com.entertainment</groupId>
                 <artifactId>rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.epam.brest.course</groupId>
+                <groupId>com.entertainment</groupId>
                 <artifactId>rest-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.epam.brest.course</groupId>
+                <groupId>com.entertainment</groupId>
                 <artifactId>web-app</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.epam.brest.course</groupId>
+                <groupId>com.entertainment</groupId>
                 <artifactId>testdb</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -159,13 +159,6 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate-core.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-                <scope>provided</scope>
             </dependency>
 
             <dependency>

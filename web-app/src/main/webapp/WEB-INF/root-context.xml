@@ -19,8 +19,8 @@
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <!-- Component scan for @Controller, @Service... annotations -->
-    <context:component-scan base-package="com.epam.brest.course.webapp"/>
-    <context:component-scan base-package="com.epam.brest.course.client"/>
+    <context:component-scan base-package="com.entertainment.webapp"/>
+    <context:component-scan base-package="com.entertainment.client"/>
 
     <!--Bean validator (JSR 303)-->
     <bean id="validator"
