@@ -23,6 +23,8 @@ public interface SeanceDao {
      */
     Seance getSeanceById(final int seanceId);
 
+    Seance getSeanceByDate(final Date seanceDate);
+
     /**
      * Add seance in DB.
      * @param seance - seance for adding.

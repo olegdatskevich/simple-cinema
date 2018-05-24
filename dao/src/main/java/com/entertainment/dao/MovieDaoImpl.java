@@ -13,8 +13,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -52,6 +50,9 @@ public class MovieDaoImpl implements MovieDao {
      */
     @Value("${movie.selectById}")
     private String movieSelectById;
+
+    @Value("${movie.selectByName}")
+    private String movieSelectByName;
     /**
      * SQL query for calculate earn.
      */
@@ -95,6 +96,18 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
+    public Movie getMovieByName(final String movieName) {
+        SqlParameterSource namedParameters
+                = new MapSqlParameterSource("movieName", movieName);
+        Movie movie = namedParameterJdbcTemplate.queryForObject(
+                movieSelectByName,
+                namedParameters,
+                BeanPropertyRowMapper.newInstance(Movie.class));
+        LOGGER.debug("getMovieByName({})", movie);
+        return movie;
+    }
+
+    @Override
     public final Collection<MovieEarned> moviesEarned() {
         Collection<MovieEarned> movies = namedParameterJdbcTemplate
                 .query(movieCalcalulateEarn,
@@ -108,13 +121,15 @@ public class MovieDaoImpl implements MovieDao {
         LOGGER.debug("addMovieIn({})", movie);
         SqlParameterSource namedParameters
                 = new BeanPropertySqlParameterSource(movie);
-        KeyHolder generatedKey = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate
-                .update(insert, namedParameters, generatedKey);
-        movie.setMovieId(generatedKey.getKey().intValue());
-        movie.setMovieActive(true);
-        LOGGER.debug("addMovieOut({})", movie);
-        return movie;
+//        KeyHolder generatedKey = new GeneratedKeyHolder();
+//        namedParameterJdbcTemplate
+//                .update(insert, namedParameters, generatedKey);
+        namedParameterJdbcTemplate.update(insert, namedParameters);
+        Movie addedMovie = getMovieByName(movie.getMovieName());
+//        movie.setMovieId(generatedKey.getKey().intValue());
+//        movie.setMovieActive(true);
+        LOGGER.debug("addMovieOut({})", addedMovie);
+        return addedMovie;
     }
 
     @Override

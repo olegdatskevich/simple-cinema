@@ -13,7 +13,7 @@ The project consists of two cooperating applications, designed to work with info
 * Spring 4 Framework  
 * Maven v3.2.2
 * Jetty v.9.4.8  
-* H2 database v1.4.196
+* PostgreSQL v42.2.2  
 
 ## Build project 
        $mvn clean install  

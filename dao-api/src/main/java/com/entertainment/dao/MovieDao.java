@@ -24,6 +24,8 @@ public interface MovieDao {
      */
     Movie getMovieById(final int movieId);
 
+    Movie getMovieByName(final String movieName);
+
     /**
      * Getting collection of movies with their earning.
      * @return collection of movies.

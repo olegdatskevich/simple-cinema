@@ -10,8 +10,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -78,6 +76,10 @@ public class SeanceDaoImpl implements SeanceDao {
      */
     @Value("${seance.selectById}")
     private String seanceSelectById;
+
+    @Value("${seance.selectByDate}")
+    private String seanceSelectByDate;
+
     /**
      * SQL query for filter seances by date.
      */
@@ -121,6 +123,18 @@ public class SeanceDaoImpl implements SeanceDao {
     }
 
     @Override
+    public Seance getSeanceByDate(final Date seanceDate) {
+        SqlParameterSource namedParameters
+                = new MapSqlParameterSource(SEANCE_DATE, seanceDate);
+        Seance seance = namedParameterJdbcTemplate.queryForObject(
+                seanceSelectByDate,
+                namedParameters,
+                BeanPropertyRowMapper.newInstance(Seance.class));
+        LOGGER.debug("getSeanceByDate({})", seance);
+        return seance;
+    }
+
+    @Override
     public final Seance addSeance(final Seance seance) {
         LOGGER.debug("addSeanceIn({})", seance);
         MapSqlParameterSource namedParameters = new MapSqlParameterSource()
@@ -129,12 +143,14 @@ public class SeanceDaoImpl implements SeanceDao {
                 .addValue(SEANCE_SOLD, seance.getSeanceSold())
                 .addValue(SEANCE_ACTIVE, true)
                 .addValue(MOVIE_ID, seance.getMovieId());
-        KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(insert, namedParameters,
-                generatedKeyHolder);
-        seance.setSeanceId(generatedKeyHolder.getKey().intValue());
-        LOGGER.debug("addSeanceOut({})", seance);
-        return seance;
+//        KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+//        namedParameterJdbcTemplate.update(insert, namedParameters,
+//                generatedKeyHolder);
+//        seance.setSeanceId(generatedKeyHolder.getKey().intValue());
+        namedParameterJdbcTemplate.update(insert, namedParameters);
+        Seance addedSeance = getSeanceByDate(seance.getSeanceDate());
+        LOGGER.debug("addSeanceOut({})", addedSeance);
+        return addedSeance;
     }
 
     @Override
@@ -158,8 +174,8 @@ public class SeanceDaoImpl implements SeanceDao {
         LOGGER.debug("filterSeanceByDate({}, {})", fromDate, toDate);
 
         SqlParameterSource namedParameters = new MapSqlParameterSource()
-        .addValue(FROM_DATE, fromDate)
-        .addValue(TO_DATE, toDate);
+                .addValue(FROM_DATE, fromDate)
+                .addValue(TO_DATE, toDate);
         Collection<Seance> seances = namedParameterJdbcTemplate.query(
                 seanceFilter,
                 namedParameters,

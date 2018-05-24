@@ -12,17 +12,22 @@
         <property name="url" value="${url}"/>
         <property name="username" value="${username}"/>
         <property name="password" value="${password}"/>
+        <property name="connectionProperties">
+            <props>
+                <prop key="socketTimeout">10</prop>
+            </props>
+        </property>
     </bean>
 
-    <jdbc:initialize-database data-source="dataSource">
-        <jdbc:script location="create-table.sql"/>
-        <jdbc:script location="data-script.sql"/>
-    </jdbc:initialize-database>
+    <!--<jdbc:initialize-database data-source="dataSource">-->
+        <!--<jdbc:script location="create-table.sql"/>-->
+        <!--<jdbc:script location="data-script.sql"/>-->
+    <!--</jdbc:initialize-database>-->
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath:db.properties</value>
+                <value>classpath:pg.properties</value>
             </list>
         </property>
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
