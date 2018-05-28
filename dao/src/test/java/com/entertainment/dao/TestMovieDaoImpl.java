@@ -42,10 +42,10 @@ public class TestMovieDaoImpl {
 
     @Test
     public void testGetMovieById() {
-        Movie movie = movieDao.getMovieById(3);
+        Movie movie = movieDao.getMovieById(2);
         LOGGER.debug("testGetMovieById({})", movie);
         assertNotNull(movie);
-        assertTrue(movie.getMovieId().equals(3));
+        assertTrue(movie.getMovieId().equals(2));
         assertTrue(movie.getMovieName().equals("Terminator"));
         assertTrue(movie.getMovieDescription().equals("Arni"));
         assertTrue(movie.isMovieActive());

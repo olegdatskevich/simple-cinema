@@ -41,7 +41,7 @@
         <property name="locations">
             <list>
                 <value>classpath:sql.properties</value>
-                <value>classpath:db.properties</value>
+                <value>classpath:pg.properties</value>
             </list>
         </property>
         <property name="ignoreUnresolvablePlaceholders" value="true"/>

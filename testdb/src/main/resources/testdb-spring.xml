@@ -19,10 +19,10 @@
         </property>
     </bean>
 
-    <!--<jdbc:initialize-database data-source="dataSource">-->
-        <!--<jdbc:script location="create-table.sql"/>-->
-        <!--<jdbc:script location="data-script.sql"/>-->
-    <!--</jdbc:initialize-database>-->
+    <jdbc:initialize-database data-source="dataSource">
+        <jdbc:script location="create-table.sql"/>
+        <jdbc:script location="data-script.sql"/>
+    </jdbc:initialize-database>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">

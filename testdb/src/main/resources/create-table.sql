@@ -1,23 +1,19 @@
-DROP TABLE IF EXISTS movie;
+DROP TABLE IF EXISTS movie CASCADE;
 CREATE TABLE movie (
- movieId INT NOT NULL AUTO_INCREMENT,
- movieName VARCHAR(255) NOT NULL,
+ movieId serial PRIMARY KEY,
+ movieName VARCHAR(255) UNIQUE NOT NULL,
  movieDescription VARCHAR(255) NULL,
- movieActive BOOLEAN,
- PRIMARY KEY (movieId),
- UNIQUE (movieName)
+ movieActive BOOLEAN
 );
-DROP TABLE IF EXISTS seance;
+DROP TABLE IF EXISTS seance CASCADE;
 CREATE TABLE seance (
- seanceId INT NOT NULL AUTO_INCREMENT,
- seanceDate TIMESTAMP NOT NULL,
+ seanceId serial PRIMARY KEY,
+ seanceDate TIMESTAMP UNIQUE NOT NULL,
  seanceCost INT NOT NULL,
  seanceSold INT NULL,
  seanceActive BOOLEAN,
  movieId INT NOT NULL,
- PRIMARY KEY (seanceId),
- UNIQUE (seanceDate),
- FOREIGN KEY (movieId) REFERENCES movie (movieId)
- ON DELETE NO ACTION
- ON UPDATE NO ACTION
+ CONSTRAINT seance_movieId_fkey FOREIGN KEY (movieId)
+ REFERENCES movie (movieId)
+ ON DELETE NO ACTION ON UPDATE NO ACTION
 );
