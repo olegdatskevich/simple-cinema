@@ -31,7 +31,7 @@
         <module>rest</module>
         <module>rest-client</module>
         <module>web-app</module>
-        <module>testdb</module>
+        <module>config</module>
     </modules>
 
     <distributionManagement>
@@ -58,6 +58,7 @@
         <jackson-databind.version>2.9.5</jackson-databind.version>
         <spring-mvc-test-utils.version>1.0.2</spring-mvc-test-utils.version>
         <lombok.version>1.16.20</lombok.version>
+        <javassist.version>3.22.0-GA</javassist.version>
     </properties>
 
     <dependencyManagement>
@@ -104,10 +105,11 @@
             </dependency>
             <dependency>
                 <groupId>com.entertainment</groupId>
-                <artifactId>testdb</artifactId>
+                <artifactId>config</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
+            <!--SPRING-->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
@@ -135,8 +137,19 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
             </dependency>
 
             <dependency>
@@ -149,12 +162,13 @@
                 <artifactId>validation-api</artifactId>
                 <version>${javax-validation.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${hibernate-validator.version}</version>
             </dependency>
+
+            <!--HIBERNATE-->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
@@ -167,17 +181,14 @@
                 <version>${thymeleaf-spring4.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>${h2.version}</version>
-            </dependency>
+            <!--DB-->
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.version}</version>
             </dependency>
 
+            <!--LOGGING-->
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
@@ -194,6 +205,7 @@
                 <version>${log4j2.version}</version>
             </dependency>
 
+            <!--TESTS-->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

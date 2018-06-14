@@ -33,6 +33,10 @@
             <groupId>com.entertainment</groupId>
             <artifactId>rest-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.entertainment</groupId>
+            <artifactId>config</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -104,6 +108,13 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>

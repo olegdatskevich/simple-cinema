@@ -25,7 +25,7 @@
         </dependency>
         <dependency>
             <groupId>com.entertainment</groupId>
-            <artifactId>testdb</artifactId>
+            <artifactId>config</artifactId>
         </dependency>
 
         <dependency>
