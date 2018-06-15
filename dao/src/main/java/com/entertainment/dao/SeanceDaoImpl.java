@@ -18,7 +18,7 @@ import java.util.Date;
 /**
  * Implementation of DAO layer for seance.
  */
-@Repository
+@Repository("seanceDao")
 public class SeanceDaoImpl implements SeanceDao {
 
     /**

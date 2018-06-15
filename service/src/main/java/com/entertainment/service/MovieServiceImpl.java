@@ -13,20 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
-/**
- * Implementation of MovieService from service-api.
- */
-@Service
+@Service("movieService")
 public class MovieServiceImpl implements MovieService {
 
-    /**
-     *
-     */
     private static final Logger LOGGER = LogManager.getLogger();
 
-    /**
-     *
-     */
     @Autowired
     private MovieDao movieDao;
 
@@ -56,7 +47,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     @Transactional
-    public final Movie addMovie(final Movie movie) throws DataAccessException {
+    public Movie addMovie(final Movie movie) throws DataAccessException {
         Movie addedMovie = movieDao.addMovie(movie);
         LOGGER.debug("addMovie({})", movie);
         return addedMovie;
@@ -64,7 +55,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     @Transactional
-    public final void updateMovie(final Movie movie)
+    public void updateMovie(final Movie movie)
             throws DataAccessException {
         LOGGER.debug("updateMovie({})", movie);
         movieDao.updateMovie(movie);
@@ -72,7 +63,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     @Transactional
-    public final void deleteMovie(final int movieId)
+    public void deleteMovie(final int movieId)
             throws DataAccessException {
         LOGGER.debug("deleteMovie({})", movieId);
         movieDao.deleteMovie(movieId);

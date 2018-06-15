@@ -12,48 +12,26 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-/**
- *
- */
 @RestController
 public class MovieRestController {
 
-    /**
-     *
-     */
     private static final Logger LOGGER = LogManager.getLogger();
 
-    /**
-     *
-     */
     @Autowired
     private MovieService movieService;
 
-    /**
-     * Get list of movies with their earn.
-     * @return - collection of movies.
-     */
     @GetMapping(value = "/movies")
     public final Collection<MovieEarned> movies() {
         LOGGER.debug("REST-server moviesEarned()");
         return movieService.moviesEarned();
     }
 
-    /**
-     * Get list of movies titles.
-     * @return - collection of movies.
-     */
     @GetMapping(value = "/moviestitles")
     public final Collection<MoviesTitles> moviesTitles() {
         LOGGER.debug("REST-server moviesTitles()");
         return movieService.getMoviesTitles();
     }
 
-    /**
-     * Get movie by id.
-     * @param id - id of movie.
-     * @return - movie.
-     */
     @GetMapping(value = "/movies/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     public final Movie movieById(@PathVariable(value = "id") final int id) {

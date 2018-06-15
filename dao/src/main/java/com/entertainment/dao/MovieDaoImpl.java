@@ -20,7 +20,7 @@ import java.util.Collection;
 /**
  * Implementation of DAO layer for movies.
  */
-@Repository
+@Repository("movieDao")
 public class MovieDaoImpl implements MovieDao {
 
     /**

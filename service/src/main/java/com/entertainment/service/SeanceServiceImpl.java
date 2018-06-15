@@ -12,20 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.Date;
 
-/**
- * Implementation of SeanceService from service-api.
- */
-@Service
+@Service("seanceService")
 public class SeanceServiceImpl implements SeanceService {
 
-    /**
-     *
-     */
     private static final Logger LOGGER = LogManager.getLogger();
 
-    /**
-     *
-     */
     @Autowired
     private SeanceDao seanceDao;
 
@@ -46,7 +37,7 @@ public class SeanceServiceImpl implements SeanceService {
 
     @Override
     @Transactional
-    public final Seance addSeance(final Seance seance)
+    public Seance addSeance(final Seance seance)
             throws DataAccessException {
         Seance addedSeance = seanceDao.addSeance(seance);
         LOGGER.debug("addSeance({})", seance);
@@ -55,7 +46,7 @@ public class SeanceServiceImpl implements SeanceService {
 
     @Override
     @Transactional
-    public final void updateSeance(final Seance seance)
+    public void updateSeance(final Seance seance)
             throws DataAccessException {
         seanceDao.updateSeance(seance);
         LOGGER.debug("updateSeance({})", seance);
@@ -63,7 +54,7 @@ public class SeanceServiceImpl implements SeanceService {
 
     @Override
     @Transactional
-    public final void deleteSeance(final int seanceId)
+    public void deleteSeance(final int seanceId)
             throws DataAccessException {
         LOGGER.debug("deleteSeance({})", seanceId);
         seanceDao.deleteSeance(seanceId);

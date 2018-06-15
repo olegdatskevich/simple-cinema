@@ -12,7 +12,7 @@
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </Root>
-        <Logger name="com.epam" level="DEBUG"/>
+        <Logger name="com.entertainment" level="DEBUG"/>
         <!--<Logger name="org.springframework" level="INFO"/>-->
     </Loggers>
 </Configuration>
