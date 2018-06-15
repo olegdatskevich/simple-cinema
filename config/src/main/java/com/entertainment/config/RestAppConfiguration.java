@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 //import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-//@Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.entertainment")
+@ComponentScan(basePackages = {"com.entertainment"})
 @PropertySource(value = {"classpath:pg.properties", "classpath:sql.properties"} )
 @EnableTransactionManagement
+//@Configuration
 public class RestAppConfiguration {
 
     @Value("${driverClassName}")
@@ -69,7 +69,6 @@ public class RestAppConfiguration {
 
     @Bean(name = "namedParameterJdbcTemplate")
     public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
-        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(getDriverManagerDataSource());
-        return namedParameterJdbcTemplate;
+        return new NamedParameterJdbcTemplate(getDriverManagerDataSource());
     }
 }

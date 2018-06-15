@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,11 +19,7 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {
-        "classpath:testdb-spring.xml",
-//        "classpath:dao.xml",
-        "classpath:dao-test.xml"})
-//@PropertySource(value = {"classpath:pg.properties", "classpath:sql.properties"} )
+@ContextConfiguration(locations = "classpath:dao-test.xml")
 @Rollback
 @Transactional
 public class TestMovieDaoImpl {

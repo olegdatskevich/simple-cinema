@@ -20,10 +20,7 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {
-        "classpath:testdb-spring.xml",
-        "classpath:dao.xml",
-        "classpath:dao-test.xml"})
+@ContextConfiguration(locations = "classpath:dao-test.xml")
 @Rollback
 @Transactional
 public class TestSeanceDaoImpl {
