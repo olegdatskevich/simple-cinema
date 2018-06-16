@@ -70,7 +70,7 @@ public class MockTestMovieService {
 
     @Test
     public void mockTestAddMovie() {
-        expect(mockMovieDao.addMovie(MOVIE)).andReturn(new Movie());
+        expect(mockMovieDao.addMovie(MOVIE)).andReturn(MOVIE_ID);
         replay(mockMovieDao);
         movieService.addMovie(MOVIE);
     }

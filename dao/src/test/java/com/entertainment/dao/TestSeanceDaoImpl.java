@@ -62,21 +62,17 @@ public class TestSeanceDaoImpl {
     @Test
     public void testAddSeance() throws ParseException {
         Date date = formatDate.parse(DATE);
-        Collection<Seance> seances = seanceDao.getSeances();
-        int sizeBefore = seances.size();
         Seance seance = new Seance(date, COST, SOLD, ACTIVE, MOVIE_ID);
         Seance addedSeance = seanceDao.addSeance(seance);
         LOGGER.debug("testAddSeance({}, {})", seance, addedSeance);
         assertNotNull(addedSeance);
         assertTrue(seance.getSeanceDate().equals(addedSeance.getSeanceDate()));
-        assertTrue((sizeBefore + 1) == seanceDao.getSeances().size());
     }
 
     @Test(expected = DuplicateKeyException.class)
     public void testAddSameSeance() throws ParseException {
         Date date = formatDate.parse(DATE);
-        Seance seance = seanceDao.addSeance(
-                new Seance(date, COST, SOLD, ACTIVE, MOVIE_ID));
+        Seance seance = new Seance(date, COST, SOLD, ACTIVE, MOVIE_ID);
         seanceDao.addSeance(seance);
         seanceDao.addSeance(seance);
     }

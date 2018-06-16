@@ -2,62 +2,44 @@ package com.entertainment.model.dao;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.Date;
 
 /**
  * POJO Seance.
  */
+@Entity
+@Table(name = "seance")
 public class Seance {
 
-    /**
-     * Seance ID.
-     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "seanceid")
     private int seanceId;
 
-    /**
-     * Date of the seance.
-     */
     //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "EEE MMM dd HH:mm:ss z yyyy")
+    @Column(name = "seancedate")
     private Date seanceDate;
 
-    /**
-     * Cost of the seance.
-     */
     @PositiveOrZero(message = "Cost can not be negative.")
+    @Column(name = "seancecost")
     private int seanceCost;
 
-    /**
-     * Count of sold tickets.
-     */
     @PositiveOrZero(message = "Sold can not be negative.")
+    @Column(name = "seancesold")
     private int seanceSold;
 
-    /**
-     * Active or canceled seance.
-     */
+    @Column(name = "seanceactive")
     private boolean seanceActive;
 
-    /**
-     * ID of movie for showing on the seance.
-     */
+    @Column(name = "movieid")
     private int movieId;
 
-    /**
-     * Default constructor.
-     */
     public Seance() {
     }
 
-    /**
-     * Constructor with parameters.
-     * @param seanceDate - date.
-     * @param seanceCost - cost.
-     * @param seanceSold - count of sold tickets
-     * @param seanceActive - activity.
-     * @param movieId - movie ID.
-     */
     public Seance(final Date seanceDate, final int seanceCost,
                   final int seanceSold, final boolean seanceActive,
                   final int movieId) {
@@ -72,7 +54,7 @@ public class Seance {
      * Getter for Seance ID.
      * @return seance ID.
      */
-    public final int getSeanceId() {
+    public int getSeanceId() {
         return seanceId;
     }
 
@@ -80,7 +62,7 @@ public class Seance {
      * Setter for Seance ID
      * @param seanceId - ID.
      */
-    public final void setSeanceId(final int seanceId) {
+    public void setSeanceId(final int seanceId) {
         this.seanceId = seanceId;
     }
 
@@ -88,7 +70,7 @@ public class Seance {
      * Getter for Seance date.
      * @return seance date.
      */
-    public final Date getSeanceDate() {
+    public Date getSeanceDate() {
         return seanceDate;
     }
 
@@ -96,7 +78,7 @@ public class Seance {
      * Setter for seanceDate.
      * @param seanceDate - seance date.
      */
-    public final void setSeanceDate(final Date seanceDate) {
+    public void setSeanceDate(final Date seanceDate) {
         this.seanceDate = seanceDate;
     }
 
@@ -104,7 +86,7 @@ public class Seance {
      * Getter for Seance cost.
      * @return seance cost.
      */
-    public final int getSeanceCost() {
+    public int getSeanceCost() {
         return seanceCost;
     }
 
@@ -112,7 +94,7 @@ public class Seance {
      * Setter for seanceCost.
      * @param seanceCost - cost of seance.
      */
-    public final void setSeanceCost(final int seanceCost) {
+    public void setSeanceCost(final int seanceCost) {
         this.seanceCost = seanceCost;
     }
 
@@ -120,7 +102,7 @@ public class Seance {
      * Getter for Seance sold.
      * @return seance sold.
      */
-    public final int getSeanceSold() {
+    public int getSeanceSold() {
         return seanceSold;
     }
 
@@ -128,7 +110,7 @@ public class Seance {
      * Setter  for seanceSold.
      * @param seanceSold - sold tickets.
      */
-    public final void setSeanceSold(final int seanceSold) {
+    public void setSeanceSold(final int seanceSold) {
         this.seanceSold = seanceSold;
     }
 
@@ -136,7 +118,7 @@ public class Seance {
      * Getter for Seance activity.
      * @return activity.
      */
-    public final boolean isSeanceActive() {
+    public boolean isSeanceActive() {
         return seanceActive;
     }
 
@@ -144,7 +126,7 @@ public class Seance {
      * Setter for seanceActive.
      * @param seanceActive - activity of seance.
      */
-    public final void setSeanceActive(final boolean seanceActive) {
+    public void setSeanceActive(final boolean seanceActive) {
         this.seanceActive = seanceActive;
     }
 
@@ -152,7 +134,7 @@ public class Seance {
      * Getter for movie ID.
      * @return movie ID.
      */
-    public final int getMovieId() {
+    public int getMovieId() {
         return movieId;
     }
 
@@ -160,7 +142,7 @@ public class Seance {
      * Setter of movie ID.
      * @param movieId - movie ID.
      */
-    public final void setMovieId(final int movieId) {
+    public void setMovieId(final int movieId) {
         this.movieId = movieId;
     }
 

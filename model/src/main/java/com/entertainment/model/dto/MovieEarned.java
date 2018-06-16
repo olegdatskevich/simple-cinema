@@ -4,38 +4,16 @@ package com.entertainment.model.dto;
  * DTO for Movie earning.
  */
 public class MovieEarned {
-    /**
-     *
-     */
-    private int movieId;
-    /**
-     *
-     */
-    private String movieName;
-    /**
-     *
-     */
-    private int earned;
-    /**
-     *
-     */
-    private boolean movieActive;
 
+    private int movieId;
+    private String movieName;
+    private int earned;
+    private boolean movieActive;
     private boolean haveSeance;
 
-    /**
-     *
-     */
     public MovieEarned() {
     }
 
-    /**
-     *
-     * @param movieId
-     * @param movieName
-     * @param earned
-     * @param movieActive
-     */
     public MovieEarned(final int movieId, final String movieName,
                        final int earned, final boolean movieActive,
                        final boolean haveSeance) {

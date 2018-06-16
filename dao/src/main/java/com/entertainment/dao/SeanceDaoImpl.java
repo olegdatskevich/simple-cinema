@@ -3,6 +3,9 @@ package com.entertainment.dao;
 import com.entertainment.model.dao.Seance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -21,115 +24,74 @@ import java.util.Date;
 @Repository("seanceDao")
 public class SeanceDaoImpl implements SeanceDao {
 
-    /**
-     * Logger for SeanceDaoImpl.
-     */
-    private static final Logger LOGGER
-            = LogManager.getLogger(SeanceDaoImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(SeanceDaoImpl.class);
 
-    /**
-     * NamedParameterJdbcTemplate.
-     */
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    /**
-     * Column seanceId in seance table DB.
-     */
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    private Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
     private static final String SEANCE_ID = "seanceId";
-    /**
-     * Column seanceDate in seance table DB.
-     */
     private static final String SEANCE_DATE = "seanceDate";
-    /**
-     * Column seanceCost in seance table DB.
-     */
     private static final String SEANCE_COST = "seanceCost";
-    /**
-     * Column seanceSold in seance table DB.
-     */
     private static final String SEANCE_SOLD = "seanceSold";
-    /**
-     * Column seanceActive in seance table DB.
-     */
     private static final String SEANCE_ACTIVE = "seanceActive";
-    /**
-     * Column movieId in seance table DB.
-     */
     private static final String MOVIE_ID = "movieId";
-    /**
-     * fromDate for SQL query.
-     */
     private static final String FROM_DATE = "fromDate";
-    /**
-     * toDate for SQL query.
-     */
     private static final String TO_DATE = "toDate";
 
-    /**
-     * SQL query for select all seances.
-     */
     @Value("${seance.select}")
     private String seancesSelect;
-    /**
-     * SQL query for select seance by id.
-     */
     @Value("${seance.selectById}")
     private String seanceSelectById;
-
     @Value("${seance.selectByDate}")
     private String seanceSelectByDate;
-
-    /**
-     * SQL query for filter seances by date.
-     */
     @Value("${seance.filter}")
     private String seanceFilter;
-    /**
-     * SQL query for insert seance.
-     */
     @Value("${seance.insert}")
     private String insert;
-    /**
-     * SQL query for update seance.
-     */
     @Value("${seance.update}")
     private String update;
-    /**
-     * SQL query for delete seance.
-     */
     @Value("${seance.delete}")
     private String delete;
 
     @Override
+    @SuppressWarnings("unchecked")
     public final Collection<Seance> getSeances() {
-        Collection<Seance> seances = namedParameterJdbcTemplate
-                .query(seancesSelect,
-                        BeanPropertyRowMapper.newInstance(Seance.class));
+        Collection<Seance> seances = getCurrentSession().createQuery("from Seance").list();
         LOGGER.debug("getSeances({})", seances);
         return seances;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public final Collection<Seance> filterSeanceByDate(final Date fromDate, final Date toDate) {
+        LOGGER.debug("filterSeanceByDate({}, {})", fromDate, toDate);
+        Collection<Seance> seances = getCurrentSession().createQuery(seanceFilter, Seance.class)
+                .setParameter("fromDate", fromDate)
+                .setParameter("toDate", toDate)
+                .getResultList();
+        LOGGER.debug("filteredSeances({})", seances);
+        return seances;
+    }
+
+    @Override
     public final Seance getSeanceById(final int seanceId) {
-        SqlParameterSource namedParameters
-                = new MapSqlParameterSource(SEANCE_ID, seanceId);
-        Seance seance = namedParameterJdbcTemplate.queryForObject(
-                seanceSelectById,
-                namedParameters,
-                BeanPropertyRowMapper.newInstance(Seance.class));
+        Seance seance = getCurrentSession().get(Seance.class, seanceId);
         LOGGER.debug("getSeanceById({})", seance);
         return seance;
     }
 
     @Override
     public Seance getSeanceByDate(final Date seanceDate) {
-        SqlParameterSource namedParameters
-                = new MapSqlParameterSource(SEANCE_DATE, seanceDate);
-        Seance seance = namedParameterJdbcTemplate.queryForObject(
-                seanceSelectByDate,
-                namedParameters,
-                BeanPropertyRowMapper.newInstance(Seance.class));
+        Query query= getCurrentSession().createQuery("from Seance where seanceDate = :seanceDate");
+        query.setParameter("seanceDate", seanceDate);
+        Seance seance = (Seance) query.uniqueResult();
         LOGGER.debug("getSeanceByDate({})", seance);
         return seance;
     }
@@ -137,17 +99,7 @@ public class SeanceDaoImpl implements SeanceDao {
     @Override
     public final Seance addSeance(final Seance seance) {
         LOGGER.debug("addSeanceIn({})", seance);
-        MapSqlParameterSource namedParameters = new MapSqlParameterSource()
-                .addValue(SEANCE_DATE, seance.getSeanceDate())
-                .addValue(SEANCE_COST, seance.getSeanceCost())
-                .addValue(SEANCE_SOLD, seance.getSeanceSold())
-                .addValue(SEANCE_ACTIVE, true)
-                .addValue(MOVIE_ID, seance.getMovieId());
-//        KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-//        namedParameterJdbcTemplate.update(insert, namedParameters,
-//                generatedKeyHolder);
-//        seance.setSeanceId(generatedKeyHolder.getKey().intValue());
-        namedParameterJdbcTemplate.update(insert, namedParameters);
+        getCurrentSession().save(seance);
         Seance addedSeance = getSeanceByDate(seance.getSeanceDate());
         LOGGER.debug("addSeanceOut({})", addedSeance);
         return addedSeance;
@@ -156,31 +108,20 @@ public class SeanceDaoImpl implements SeanceDao {
     @Override
     public final void updateSeance(final Seance seance) {
         LOGGER.debug("updateSeance({})", seance);
-        SqlParameterSource namedParameter
-                = new BeanPropertySqlParameterSource(seance);
-        namedParameterJdbcTemplate.update(update, namedParameter);
+        Seance seanceToUpdate = getCurrentSession().get(Seance.class, seance.getSeanceId());
+        seanceToUpdate.setSeanceDate(seance.getSeanceDate());
+        seanceToUpdate.setSeanceSold(seance.getSeanceSold());
+        seanceToUpdate.setSeanceCost(seance.getSeanceCost());
+        seanceToUpdate.setSeanceActive(seance.isSeanceActive());
+        seanceToUpdate.setMovieId(seance.getMovieId());
+        getCurrentSession().update(seanceToUpdate);
     }
 
     @Override
     public final void deleteSeance(final int seanceId) {
         LOGGER.debug("deleteSeance({})", seanceId);
-        namedParameterJdbcTemplate.
-                getJdbcOperations().update(delete, seanceId);
-    }
-
-    @Override
-    public final Collection<Seance> filterSeanceByDate(final Date fromDate,
-                                                       final Date toDate) {
-        LOGGER.debug("filterSeanceByDate({}, {})", fromDate, toDate);
-
-        SqlParameterSource namedParameters = new MapSqlParameterSource()
-                .addValue(FROM_DATE, fromDate)
-                .addValue(TO_DATE, toDate);
-        Collection<Seance> seances = namedParameterJdbcTemplate.query(
-                seanceFilter,
-                namedParameters,
-                BeanPropertyRowMapper.newInstance(Seance.class));
-        LOGGER.debug("filteredSeances({})", seances);
-        return seances;
+        Seance seanceToDelete = getCurrentSession().get(Seance.class, seanceId);
+        seanceToDelete.setSeanceActive(false);
+        getCurrentSession().update(seanceToDelete);
     }
 }

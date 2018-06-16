@@ -35,7 +35,7 @@ public interface MovieService {
      * @param movie - movie that need to add.
      * @return movie which was added.
      */
-    Movie addMovie(final Movie movie);
+    int addMovie(final Movie movie);
 
     /**
      * Update movie.

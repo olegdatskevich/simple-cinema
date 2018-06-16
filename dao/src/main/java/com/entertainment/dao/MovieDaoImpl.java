@@ -5,6 +5,10 @@ import com.entertainment.model.dto.MovieEarned;
 import com.entertainment.model.dto.MoviesTitles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
@@ -15,134 +19,92 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.xml.transform.Transformer;
 import java.util.Collection;
 
-/**
- * Implementation of DAO layer for movies.
- */
 @Repository("movieDao")
 public class MovieDaoImpl implements MovieDao {
 
-    /**
-     * Logger for MovieDaoImpl.
-     */
-    private static final Logger LOGGER
-            = LogManager.getLogger(MovieDaoImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(MovieDaoImpl.class);
 
-    /**
-     * NamedParameterJdbcTemplate.
-     */
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private SessionFactory sessionFactory;
 
-    /**
-     * Column name in movie table DB.
-     */
+    private Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
     private static final String MOVIE_ID = "movieId";
 
-    /**
-     * SQL query for select all movies.
-     */
     @Value("${movie.select}")
     private String moviesSelect;
-    /**
-     * SQL query for select movie by id.
-     */
     @Value("${movie.selectById}")
     private String movieSelectById;
-
     @Value("${movie.selectByName}")
     private String movieSelectByName;
-    /**
-     * SQL query for calculate earn.
-     */
     @Value("${movie.calculate}")
     private String movieCalcalulateEarn;
-    /**
-     * SQL query for insert movie.
-     */
     @Value("${movie.insert}")
     private String insert;
-    /**
-     * SQL query for update movie.
-     */
     @Value("${movie.update}")
     private String update;
-    /**
-     * SQL query for delete movie.
-     */
     @Value("${movie.delete}")
     private String delete;
 
     @Override
+    @SuppressWarnings("unchecked")
     public final Collection<MoviesTitles> getMoviesTitles() {
-        Collection<MoviesTitles> movies = namedParameterJdbcTemplate
-                .query(moviesSelect,
-                        BeanPropertyRowMapper.newInstance(MoviesTitles.class));
+        Collection<MoviesTitles> movies
+                = getCurrentSession()
+                .createQuery(moviesSelect, MoviesTitles.class)
+                .getResultList();
         LOGGER.debug("getMoviesTitles({})", movies);
         return movies;
     }
 
     @Override
-    public final Movie getMovieById(final int movieId) {
-        SqlParameterSource namedParameters
-                = new MapSqlParameterSource(MOVIE_ID, movieId);
-        Movie movie = namedParameterJdbcTemplate.queryForObject(
-                movieSelectById,
-                namedParameters,
-                BeanPropertyRowMapper.newInstance(Movie.class));
-        LOGGER.debug("getMovieById({})", movie);
-        return movie;
-    }
-
-    @Override
-    public Movie getMovieByName(final String movieName) {
-        SqlParameterSource namedParameters
-                = new MapSqlParameterSource("movieName", movieName);
-        Movie movie = namedParameterJdbcTemplate.queryForObject(
-                movieSelectByName,
-                namedParameters,
-                BeanPropertyRowMapper.newInstance(Movie.class));
-        LOGGER.debug("getMovieByName({})", movie);
-        return movie;
-    }
-
-    @Override
+    @SuppressWarnings("unchecked")
     public final Collection<MovieEarned> moviesEarned() {
-        Collection<MovieEarned> movies = namedParameterJdbcTemplate
-                .query(movieCalcalulateEarn,
-                        BeanPropertyRowMapper.newInstance(MovieEarned.class));
+        Collection<MovieEarned> movies
+                = getCurrentSession()
+                .createQuery(movieCalcalulateEarn, MovieEarned.class)
+                .getResultList();
+//        Collection<MovieEarned> movies = getCurrentSession().createQuery(movieCalcalulateEarn).list();
         LOGGER.debug("moviesEarned({})", movies);
         return movies;
     }
 
     @Override
-    public final Movie addMovie(final Movie movie) throws DataAccessException {
+    public final Movie getMovieById(final int movieId) {
+        Movie movie = (Movie) getCurrentSession().get(Movie.class, movieId);
+        LOGGER.debug("getMovieById({})", movie);
+        return movie;
+    }
+
+    @Override
+    public final int addMovie(final Movie movie) throws DataAccessException {
         LOGGER.debug("addMovieIn({})", movie);
-        SqlParameterSource namedParameters
-                = new BeanPropertySqlParameterSource(movie);
-//        KeyHolder generatedKey = new GeneratedKeyHolder();
-//        namedParameterJdbcTemplate
-//                .update(insert, namedParameters, generatedKey);
-        namedParameterJdbcTemplate.update(insert, namedParameters);
-        Movie addedMovie = getMovieByName(movie.getMovieName());
-//        movie.setMovieId(generatedKey.getKey().intValue());
-//        movie.setMovieActive(true);
-        LOGGER.debug("addMovieOut({})", addedMovie);
-        return addedMovie;
+        int movieId = (int) getCurrentSession().save(movie);
+        LOGGER.debug("addedMovieId({})", movieId);
+        return movieId;
     }
 
     @Override
     public final void updateMovie(final Movie movie) {
         LOGGER.debug("updateMovie({})", movie);
-        SqlParameterSource namedParameter
-                = new BeanPropertySqlParameterSource(movie);
-        namedParameterJdbcTemplate.update(update, namedParameter);
+        Movie movieToUpdate = getCurrentSession().get(Movie.class, movie.getMovieId());
+        movieToUpdate.setMovieName(movie.getMovieName());
+        movieToUpdate.setMovieDescription(movie.getMovieDescription());
+        movieToUpdate.setMovieActive(movie.isMovieActive());
+        getCurrentSession().update(movieToUpdate);
     }
 
     @Override
     public final void deleteMovie(final int movieId) {
         LOGGER.debug("deleteMovie({})", movieId);
-        namedParameterJdbcTemplate.getJdbcOperations().update(delete, movieId);
+        Movie movieToDelete = getCurrentSession().get(Movie.class, movieId);
+        movieToDelete.setMovieActive(false);
+        getCurrentSession().update(movieToDelete);
     }
 }

@@ -1,22 +1,31 @@
 package com.entertainment.model.dao;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+@Entity
+@Table(name = "movie")
 public class Movie {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "movieid")
     private int movieId;
 
     @NotEmpty(message = "Movie title can not be empty.")
     @Size (min = 2, max = 50, message
             = "Movie title must be between 2 and 50 characters.")
+    @Column(name = "moviename")
     private String movieName;
 
     @NotEmpty(message = "Movie description can not be empty.")
     @Size (min = 2, max = 50, message
             = "Movie description must be between 2 and 50 characters.")
+    @Column(name = "moviedescription")
     private String movieDescription;
 
+    @Column(name = "movieactive")
     private boolean movieActive;
 
     public Movie() {
@@ -30,35 +39,35 @@ public class Movie {
         this.movieActive = movieActive;
     }
 
-    public final Integer getMovieId() {
+    public Integer getMovieId() {
         return movieId;
     }
 
-    public final void setMovieId(final Integer movieId) {
+    public void setMovieId(final Integer movieId) {
         this.movieId = movieId;
     }
 
-    public final String getMovieName() {
+    public String getMovieName() {
         return movieName;
     }
 
-    public final void setMovieName(final String movieName) {
+    public void setMovieName(final String movieName) {
         this.movieName = movieName;
     }
 
-    public final String getMovieDescription() {
+    public String getMovieDescription() {
         return movieDescription;
     }
 
-    public final void setMovieDescription(final String movieDescription) {
+    public void setMovieDescription(final String movieDescription) {
         this.movieDescription = movieDescription;
     }
 
-    public final boolean isMovieActive() {
+    public boolean isMovieActive() {
         return movieActive;
     }
 
-    public final void setMovieActive(final boolean movieActive) {
+    public void setMovieActive(final boolean movieActive) {
         this.movieActive = movieActive;
     }
 

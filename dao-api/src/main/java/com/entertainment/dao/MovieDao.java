@@ -24,8 +24,6 @@ public interface MovieDao {
      */
     Movie getMovieById(final int movieId);
 
-    Movie getMovieByName(final String movieName);
-
     /**
      * Getting collection of movies with their earning.
      * @return collection of movies.
@@ -37,7 +35,7 @@ public interface MovieDao {
      * @param movie - movie for adding.
      * @return added movie.
      */
-    Movie addMovie(final Movie movie);
+    int addMovie(final Movie movie);
 
     /**
      * Update movie.

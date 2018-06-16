@@ -47,8 +47,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     @Transactional
-    public Movie addMovie(final Movie movie) throws DataAccessException {
-        Movie addedMovie = movieDao.addMovie(movie);
+    public int addMovie(final Movie movie) throws DataAccessException {
+        int addedMovie = movieDao.addMovie(movie);
         LOGGER.debug("addMovie({})", movie);
         return addedMovie;
     }
