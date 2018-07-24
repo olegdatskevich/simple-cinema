@@ -124,7 +124,7 @@ public class MockTestSeanceController {
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
         Date date = formatDate.parse(DATE);
 
-        expect(mockSeanceService.addSeance(anyObject())).andReturn(SEANCE);
+        expect(mockSeanceService.addSeance(anyObject())).andReturn(SEANCE_ID);
         replay(mockSeanceService);
 
         mockMvc.perform(
@@ -135,12 +135,7 @@ public class MockTestSeanceController {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("seanceId", Matchers.is(SEANCE_ID)))
-                .andExpect(jsonPath("seanceDate", Matchers.is(date.getTime())))
-                .andExpect(jsonPath("seanceCost", Matchers.is(5)))
-                .andExpect(jsonPath("seanceSold", Matchers.is(25)))
-                .andExpect(jsonPath("seanceActive", Matchers.is(true)))
-                .andExpect(jsonPath("movieId", Matchers.is(2)));
+                .andExpect(content().string("1"));
     }
 
     @Test

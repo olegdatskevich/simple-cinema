@@ -7,23 +7,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.xml.transform.Transformer;
 import java.util.Collection;
 
 @Repository("movieDao")
+@Transactional
 public class MovieDaoImpl implements MovieDao {
 
     private static final Logger LOGGER = LogManager.getLogger(MovieDaoImpl.class);
@@ -35,22 +28,10 @@ public class MovieDaoImpl implements MovieDao {
         return sessionFactory.getCurrentSession();
     }
 
-    private static final String MOVIE_ID = "movieId";
-
     @Value("${movie.select}")
     private String moviesSelect;
-    @Value("${movie.selectById}")
-    private String movieSelectById;
-    @Value("${movie.selectByName}")
-    private String movieSelectByName;
     @Value("${movie.calculate}")
-    private String movieCalcalulateEarn;
-    @Value("${movie.insert}")
-    private String insert;
-    @Value("${movie.update}")
-    private String update;
-    @Value("${movie.delete}")
-    private String delete;
+    private String movieCalculateEarn;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -66,13 +47,12 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     @SuppressWarnings("unchecked")
     public final Collection<MovieEarned> moviesEarned() {
-        Collection<MovieEarned> movies
+        Collection<MovieEarned> movieEarned
                 = getCurrentSession()
-                .createQuery(movieCalcalulateEarn, MovieEarned.class)
+                .createNativeQuery(movieCalculateEarn, "mappingMovieEarn")
                 .getResultList();
-//        Collection<MovieEarned> movies = getCurrentSession().createQuery(movieCalcalulateEarn).list();
-        LOGGER.debug("moviesEarned({})", movies);
-        return movies;
+        LOGGER.debug("moviesEarned({})", movieEarned);
+        return movieEarned;
     }
 
     @Override

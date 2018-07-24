@@ -40,12 +40,12 @@ public class MockTestSeanceService {
         Seance.setSeanceSold(25);
         Seance.setSeanceActive(true);
         Seance.setMovieId(1);
+        reset(mockSeanceDao);
     }
 
     @After
     public void tearDown() {
         verify(mockSeanceDao);
-        reset(mockSeanceDao);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class MockTestSeanceService {
 
     @Test
     public void mockTestAddSeance() {
-        expect(mockSeanceDao.addSeance(Seance)).andReturn(new Seance());
+        expect(mockSeanceDao.addSeance(Seance)).andReturn(Seance_ID);
         replay(mockSeanceDao);
         seanceService.addSeance(Seance);
     }

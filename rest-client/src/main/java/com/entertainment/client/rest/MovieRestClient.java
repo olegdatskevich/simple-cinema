@@ -72,11 +72,11 @@ public class MovieRestClient implements MovieService {
     }
 
     @Override
-    public final Movie addMovie(final Movie movie)
+    public final int addMovie(final Movie movie)
             throws ServerDataAccessException {
-        ResponseEntity<Movie> responseEntity
-                = restTemplate.postForEntity(url, movie, Movie.class);
-        Movie result = responseEntity.getBody();
+        ResponseEntity<Integer> responseEntity
+                = restTemplate.postForEntity(url, movie, Integer.class);
+        Integer result = responseEntity.getBody();
         LOGGER.debug("REST-client addMovie({})", responseEntity);
         return result;
     }

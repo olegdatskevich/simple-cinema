@@ -1,11 +1,22 @@
 package com.entertainment.model.dao;
 
+import com.entertainment.model.dto.MovieEarned;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "movie")
+@SqlResultSetMapping
+        (name = "mappingMovieEarn", classes = {@ConstructorResult(targetClass = MovieEarned.class,
+                columns = {@ColumnResult(name = "movieId", type = Integer.class),
+                        @ColumnResult(name = "movieName", type = String.class),
+                        @ColumnResult(name = "movieActive", type = Boolean.class),
+                        @ColumnResult(name = "earned", type = Integer.class),
+                        @ColumnResult(name = "haveSeance", type = Boolean.class)}
+        )}
+        )
 public class Movie {
 
     @Id

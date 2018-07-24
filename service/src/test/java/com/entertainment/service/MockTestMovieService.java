@@ -27,7 +27,7 @@ public class MockTestMovieService {
     private static final Movie MOVIE
             = new Movie("TestMovie", "TestMovieDep", true);
     private static final MovieEarned MOVIE_EARNED
-            = new MovieEarned(1, "Money", 100, true, true);
+            = new MovieEarned(1, "Money", true, 100, true);
 
     @Autowired
     private MovieDao mockMovieDao;

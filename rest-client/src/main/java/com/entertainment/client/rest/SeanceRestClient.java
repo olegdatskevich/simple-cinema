@@ -77,11 +77,11 @@ public class SeanceRestClient implements SeanceService {
     }
 
     @Override
-    public final Seance addSeance(final Seance seance)
+    public final int addSeance(final Seance seance)
             throws ServerDataAccessException {
-        ResponseEntity<Seance> responseEntity
-                = restTemplate.postForEntity(url, seance, Seance.class);
-        Seance result = responseEntity.getBody();
+        ResponseEntity<Integer> responseEntity
+                = restTemplate.postForEntity(url, seance, Integer.class);
+        Integer result = responseEntity.getBody();
         LOGGER.debug("REST-client addSeance({})", result);
         return result;
     }

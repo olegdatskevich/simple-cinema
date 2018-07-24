@@ -109,14 +109,15 @@ public class MockTestMovieRestClient {
 
     @Test
     public void mockTestAddMovieClient() {
-        ResponseEntity entity = new ResponseEntity<>(MOVIE_1, HttpStatus.OK);
-        expect(mockRestTemplate.postForEntity(anyString(), anyObject(), anyObject()))
+        ResponseEntity entity = new ResponseEntity<>(MOVIE_1.getMovieId(), HttpStatus.OK);
+        expect(mockRestTemplate
+                .postForEntity(anyString(), anyObject(), anyObject()))
                 .andReturn(entity);
         replay(mockRestTemplate);
 
-        Movie result = mockMovieService.addMovie(MOVIE_1);
+        Integer result = mockMovieService.addMovie(MOVIE_1);
         assertNotNull(result);
-        assertEquals(MOVIE_1.getMovieName(), result.getMovieName());
+        assertEquals(MOVIE_1.getMovieId(), result);
     }
 
     @Test

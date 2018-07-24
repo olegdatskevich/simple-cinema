@@ -103,7 +103,7 @@ public class TestMovieController {
     @Test
     public void testAddMovie() throws Exception {
         LOGGER.debug("testAddMovie()");
-        expect(mockMovieService.addMovie(MOVIE)).andReturn(MOVIE);
+        expect(mockMovieService.addMovie(MOVIE)).andReturn(MOVIE.getMovieId());
         replay(mockMovieService);
 
         mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/movie", MOVIE))

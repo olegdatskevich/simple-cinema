@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -127,7 +128,7 @@ public class MockTestMovieController {
 
     @Test
     public void mockTestAddMovie() throws Exception {
-        expect(mockMovieService.addMovie(anyObject())).andReturn(MOVIE);
+        expect(mockMovieService.addMovie(MOVIE)).andReturn(MOVIE_ID);
         replay(mockMovieService);
 
         mockMvc.perform(
@@ -138,9 +139,7 @@ public class MockTestMovieController {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("movieId", Matchers.is(MOVIE_ID)))
-                .andExpect(jsonPath("movieName", Matchers.is("REST_MOVIE")))
-                .andExpect(jsonPath("movieDescription", Matchers.is("REST_MOVIE_DESCR")));
+                .andExpect(content().string("1"));
     }
 
     @Test

@@ -37,6 +37,13 @@ public class TestMovieDaoImpl {
     }
 
     @Test
+    public void testMoviesEarned() {
+        Collection<MovieEarned> movies = movieDao.moviesEarned();
+        LOGGER.debug("testMoviesEarned({})", movies);
+        assertFalse(movies.isEmpty());
+    }
+
+    @Test
     public void testGetMovieById() {
         Movie movie = movieDao.getMovieById(2);
         LOGGER.debug("testGetMovieById({})", movie);
@@ -45,13 +52,6 @@ public class TestMovieDaoImpl {
         assertTrue(movie.getMovieName().equals("Terminator"));
         assertTrue(movie.getMovieDescription().equals("Arni"));
         assertTrue(movie.isMovieActive());
-    }
-
-    @Test
-    public void testMoviesEarned() {
-        Collection<MovieEarned> movies = movieDao.moviesEarned();
-        LOGGER.debug("testMoviesEarned({})", movies);
-        assertFalse(movies.isEmpty());
     }
 
     @Test

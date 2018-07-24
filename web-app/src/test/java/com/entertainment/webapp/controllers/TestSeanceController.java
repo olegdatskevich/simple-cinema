@@ -171,7 +171,7 @@ public class TestSeanceController {
     @Test
     public void testAddSeance() throws Exception {
         LOGGER.debug("testAddSeance({})", SEANCE);
-        expect(mockSeanceService.addSeance(SEANCE)).andReturn(SEANCE);
+        expect(mockSeanceService.addSeance(SEANCE)).andReturn(SEANCE.getSeanceId());
         replay(mockSeanceService);
 
         mockMvc.perform(postForm("/seance", SEANCE)

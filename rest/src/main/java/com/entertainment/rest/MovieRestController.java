@@ -39,32 +39,19 @@ public class MovieRestController {
         return movieService.getMovieById(id);
     }
 
-    /**
-     * Add movie.
-     * @param movie for add.
-     * @return added movie.
-     */
     @PostMapping(value = "/movies")
     @ResponseStatus(HttpStatus.CREATED)
-    public final Movie addMovie(@RequestBody final Movie movie) {
+    public final int addMovie(@RequestBody final Movie movie) {
         LOGGER.debug("REST-server addMovie({})", movie);
         return movieService.addMovie(movie);
     }
 
-    /**
-     * Update movie information.
-     * @param movie for updating.
-     */
     @PutMapping(value = "/movies")
     public final void updateMovie(@RequestBody final Movie movie) {
         LOGGER.debug("REST-server updateMovie({})", movie);
         movieService.updateMovie(movie);
     }
 
-    /**
-     * Delete movie.
-     * @param id of movie.
-     */
     @PutMapping(value = "/movies/{id}")
     public final void deleteMovie(@PathVariable(value = "id") final int id) {
         LOGGER.debug("REST-server deleteMovie({})", id);

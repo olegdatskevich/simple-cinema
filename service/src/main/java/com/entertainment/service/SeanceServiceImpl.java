@@ -37,9 +37,8 @@ public class SeanceServiceImpl implements SeanceService {
 
     @Override
     @Transactional
-    public Seance addSeance(final Seance seance)
-            throws DataAccessException {
-        Seance addedSeance = seanceDao.addSeance(seance);
+    public int addSeance(final Seance seance) throws DataAccessException {
+        int addedSeance = seanceDao.addSeance(seance);
         LOGGER.debug("addSeance({})", seance);
         return addedSeance;
     }
