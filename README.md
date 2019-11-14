@@ -38,3 +38,8 @@ The project consists of two cooperating applications, designed to work with info
 by **Oleg Datskevich**  
 e-mail: olegdac@gmail.com  
 tel: +375(29)5266584
+
+##  
+by **Oleg Datskevich**  
+e-mail: olegdac@gmail.com  
+tel: +375(29)5266584
