@@ -115,8 +115,7 @@ public class MockTestMovieRestClient {
                 .andReturn(entity);
         replay(mockRestTemplate);
 
-        Integer result = mockMovieService.addMovie(MOVIE_1);
-        assertNotNull(result);
+        int result = mockMovieService.addMovie(MOVIE_1);
         assertEquals(MOVIE_1.getMovieId(), result);
     }
 

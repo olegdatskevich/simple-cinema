@@ -1,8 +1,21 @@
 package com.entertainment.model.dao;
 
 import com.entertainment.model.dto.MovieEarned;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -11,36 +24,44 @@ import javax.validation.constraints.Size;
 @SqlResultSetMapping
         (name = "mappingMovieEarn", classes = {@ConstructorResult(targetClass = MovieEarned.class,
                 columns = {@ColumnResult(name = "movieId", type = Integer.class),
-                        @ColumnResult(name = "movieName", type = String.class),
-                        @ColumnResult(name = "movieActive", type = Boolean.class),
-                        @ColumnResult(name = "earned", type = Integer.class),
-                        @ColumnResult(name = "haveSeance", type = Boolean.class)}
+                           @ColumnResult(name = "movieName", type = String.class),
+                           @ColumnResult(name = "movieActive", type = Boolean.class),
+                           @ColumnResult(name = "earned", type = Integer.class),
+                           @ColumnResult(name = "haveSeance", type = Boolean.class)}
         )}
         )
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movieid")
+    @Getter
+    @Setter
     private int movieId;
 
     @NotEmpty(message = "Movie title can not be empty.")
-    @Size (min = 2, max = 50, message
-            = "Movie title must be between 2 and 50 characters.")
+    @Size (min = 2, max = 50, message = "Movie title must be between 2 and 50 characters.")
     @Column(name = "moviename")
+    @Getter
+    @Setter
     private String movieName;
 
     @NotEmpty(message = "Movie description can not be empty.")
-    @Size (min = 2, max = 50, message
-            = "Movie description must be between 2 and 50 characters.")
+    @Size (min = 2, max = 50, message = "Movie description must be between 2 and 50 characters.")
     @Column(name = "moviedescription")
+    @Getter
+    @Setter
+    @EqualsAndHashCode.Exclude
     private String movieDescription;
 
     @Column(name = "movieactive")
+    @Getter
+    @Setter
+    @EqualsAndHashCode.Exclude
     private boolean movieActive;
-
-    public Movie() {
-    }
 
     public Movie(final String movieName,
                  final String movieDescription,
@@ -48,73 +69,5 @@ public class Movie {
         this.movieName = movieName;
         this.movieDescription = movieDescription;
         this.movieActive = movieActive;
-    }
-
-    public Integer getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(final Integer movieId) {
-        this.movieId = movieId;
-    }
-
-    public String getMovieName() {
-        return movieName;
-    }
-
-    public void setMovieName(final String movieName) {
-        this.movieName = movieName;
-    }
-
-    public String getMovieDescription() {
-        return movieDescription;
-    }
-
-    public void setMovieDescription(final String movieDescription) {
-        this.movieDescription = movieDescription;
-    }
-
-    public boolean isMovieActive() {
-        return movieActive;
-    }
-
-    public void setMovieActive(final boolean movieActive) {
-        this.movieActive = movieActive;
-    }
-
-    @Override
-    public final String toString() {
-        return "\n\tMovie{"
-                + "Id=" + movieId
-                + ", Name='" + movieName + '\''
-                + ", Description='" + movieDescription + '\''
-                + ", Active=" + movieActive
-                + '}';
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Movie movie = (Movie) o;
-
-        if (movieId != movie.movieId) {
-            return false;
-        }
-        return movieName != null
-                ? movieName.equals(movie.movieName)
-                : movie.movieName == null;
-    }
-
-    @Override
-    public final int hashCode() {
-        int result = movieId;
-        result = 31 * result + (movieName != null ? movieName.hashCode() : 0);
-        return result;
     }
 }
