@@ -51,7 +51,7 @@
         <mock.version>3.5.1</mock.version>
         <thymeleaf-spring4.version>3.0.9.RELEASE</thymeleaf-spring4.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
-        <hibernate-validator.version>6.0.10.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.1.0.Final</hibernate-validator.version>
         <hibernate-core.version>5.3.0.Final</hibernate-core.version>
         <jackson.databind.version>2.9.4</jackson.databind.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
