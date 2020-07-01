@@ -46,7 +46,7 @@
         <h2.version>1.4.196</h2.version>
         <postgresql.version>42.2.2</postgresql.version>
         <spring.version>4.3.14.RELEASE</spring.version>
-        <log4j2.version>2.10.0</log4j2.version>
+        <log4j2.version>2.13.3</log4j2.version>
         <junit.version>4.12</junit.version>
         <mock.version>3.5.1</mock.version>
         <thymeleaf-spring4.version>3.0.9.RELEASE</thymeleaf-spring4.version>
